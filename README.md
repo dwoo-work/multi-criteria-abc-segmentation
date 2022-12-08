@@ -60,12 +60,12 @@ For each supplier, they are evaluated on two metrics - their products comlexity 
 
 To measure risk, we will employ a Risk Rank from 0 (least risky) to 2 (most risky):
 
-| sub-component      | + 0.0                | + 0.5                   |
+| sub-component      | + 0.0 (Y)            | + 0.5                   |
 | ------------------ | ---------------------| ----------------------- |
-| availability       | standard product     | complex product         |
-| no_suppliers       | many suppliers       | few / sole supplier     |
-| standard           | regularly available  | not regularly available |
-| price_fluctuation  | steady cost          | volatile cost           |
+| availability       | regular              | seldom                  |
+| suppliers          | many                 | few                     |
+| product_complexity | standard             | complex                 |
+| price_stability    | stable               | unstable                |
 
 To measure the cost, the formula is shown below:
 
