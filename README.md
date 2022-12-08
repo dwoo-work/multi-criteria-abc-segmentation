@@ -56,20 +56,19 @@ When it comes to Supplier Segmentation, one popular model that is commonly being
 
 ![Kraljic's Matrix Diagram](https://github.com/dwoo-work/MultiCriteriaABC.Analysis/blob/0a89153bb25bf3f79aac81b93a0df28b6b9eb45a/img/Kraljic's_Matrix_Diagram.png)
 
-For each supplier, they are evaluated on two metrics - their products comlexity (risk), and their impact to our business (profit/cost).
+For each supplier, they are evaluated on two metrics - their products comlexity (risk), and their impact to our business (cost).
 
 To measure risk, we will employ a Risk Rank from 0 (least risky) to 2 (most risky):
 
-| + 0.0                | + 0.5                   |
-| ---------------------| ----------------------- |
-| Standard product     | Complex product         |
-| Many suppliers       | Few / Sole supplier     |
-| Regularly available  | Not regularly available |
-| Steady cost          | Volatile cost           |
+| sub-component      || + 0.0                | + 0.5                   |
+| ------------------ || ---------------------| ----------------------- |
+| availability       || standard product     | complex product         |
+| no_suppliers       || many suppliers       | few / sole supplier     |
+| standard           || regularly available  | not regularly available |
+| price_fluctuation  || steady cost          | volatile cost           |
 
-To measure either profit or cost, we can employ the following calculations:
+To measure the cost, the formula is shown below:
 
-- Profit = (Profit per unit) * (Total units planned to purchase)
 - Cost = (Cost per unit) * (Total units planned to purchase)
 
 ## Installation
