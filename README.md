@@ -89,7 +89,9 @@ pip install inventorize
 
 ## Sample Dataset
 
-You can download the sales_data_sample_utf8.csv file from the source folder, which is located [here](https://github.com/dwoo-work/MultiCriteriaABC.Analysis/blob/main/src).
+For Product Segmentation, you can download the sales_data_sample_utf8.csv file from the source folder, which is located [here](https://github.com/dwoo-work/MultiCriteriaABC.Analysis/blob/main/src).
+
+On the other hand, for Supplier Segmentation, you can download the supplier_data_sample_utf8.csv file from the source folder, which is located [here](https://github.com/dwoo-work/MultiCriteriaABC.Analysis/blob/main/src).
 
 Ensure that the file is in CSV UTF-8 format, to avoid UnicodeDecodeError later on.
 
