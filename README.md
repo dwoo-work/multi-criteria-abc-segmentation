@@ -197,6 +197,124 @@ Plot the charts for Australia's Multi-Criteria ABC Analysis using Seaborn.
 sns.barplot(x = 'product_mix', y = 'sku', data = australia)
 ```
 
+## Code Explanation (for Supplier Segmentation)
+
+### Part 1 - Preparation
+
+Lines 5-6:  
+Import the required libraries.
+```python   
+import pandas as pd
+import seaborn as sns
+```
+
+Lines 8-12:  
+Import and clean the CSV dataframe.
+```python   
+supplier = pd.read_csv('supplier_data_sample_utf8.csv')
+supplier = supplier.drop_duplicates()
+supplier = supplier.dropna()
+supplier.info()
+supplier.head()
+```
+
+Lines 14-20:  
+Convert availability section from N or Y, to its 0.0 (risk factor absent) or 0.1 (risk factor present). Then, add all responsed values from Q1 to Q5, to a consolidated availability column within the dataframe.
+```python   
+supplier['AVAILABILITY_Q1'] = pd.to_numeric(supplier['AVAILABILITY_Q1'].replace(['N', 'Y'], ['0.0', '0.1']))
+supplier['AVAILABILITY_Q2'] = pd.to_numeric(supplier['AVAILABILITY_Q2'].replace(['N', 'Y'], ['0.0', '0.1']))
+supplier['AVAILABILITY_Q3'] = pd.to_numeric(supplier['AVAILABILITY_Q3'].replace(['N', 'Y'], ['0.0', '0.1']))
+supplier['AVAILABILITY_Q4'] = pd.to_numeric(supplier['AVAILABILITY_Q4'].replace(['N', 'Y'], ['0.0', '0.1']))
+supplier['AVAILABILITY_Q5'] = pd.to_numeric(supplier['AVAILABILITY_Q5'].replace(['N', 'Y'], ['0.0', '0.1']))
+
+supplier['AVAILABILITY'] = supplier['AVAILABILITY_Q1'] + supplier['AVAILABILITY_Q2'] + supplier['AVAILABILITY_Q3'] + supplier['AVAILABILITY_Q4'] + supplier['AVAILABILITY_Q5']
+```
+
+Lines 22-28:  
+Convert suppliers section from N or Y, to its 0.0 (risk factor absent) or 0.1 (risk factor present). Then, add all responsed values from Q1 to Q5, to a consolidated suppliers column within the dataframe.
+```python   
+supplier['SUPPLIERS_Q1'] = pd.to_numeric(supplier['SUPPLIERS_Q1'].replace(['N', 'Y'], ['0.0', '0.1']))
+supplier['SUPPLIERS_Q2'] = pd.to_numeric(supplier['SUPPLIERS_Q2'].replace(['N', 'Y'], ['0.0', '0.1']))
+supplier['SUPPLIERS_Q3'] = pd.to_numeric(supplier['SUPPLIERS_Q3'].replace(['N', 'Y'], ['0.0', '0.1']))
+supplier['SUPPLIERS_Q4'] = pd.to_numeric(supplier['SUPPLIERS_Q4'].replace(['N', 'Y'], ['0.0', '0.1']))
+supplier['SUPPLIERS_Q5'] = pd.to_numeric(supplier['SUPPLIERS_Q5'].replace(['N', 'Y'], ['0.0', '0.1']))
+
+supplier['SUPPLIERS'] = supplier['SUPPLIERS_Q1'] + supplier['SUPPLIERS_Q2'] + supplier['SUPPLIERS_Q3'] + supplier['SUPPLIERS_Q4'] + supplier['SUPPLIERS_Q5']
+```
+
+Lines 30-36:  
+Convert product complexity section from N or Y, to its 0.0 (risk factor absent) or 0.1 (risk factor present). Then, add all responsed values from Q1 to Q5, to a consolidated product complexity column within the dataframe.
+```python   
+supplier['PRODUCT_COMPLEXITY_Q1'] = pd.to_numeric(supplier['PRODUCT_COMPLEXITY_Q1'].replace(['N', 'Y'], ['0.0', '0.1']))
+supplier['PRODUCT_COMPLEXITY_Q2'] = pd.to_numeric(supplier['PRODUCT_COMPLEXITY_Q2'].replace(['N', 'Y'], ['0.0', '0.1']))
+supplier['PRODUCT_COMPLEXITY_Q3'] = pd.to_numeric(supplier['PRODUCT_COMPLEXITY_Q3'].replace(['N', 'Y'], ['0.0', '0.1']))
+supplier['PRODUCT_COMPLEXITY_Q4'] = pd.to_numeric(supplier['PRODUCT_COMPLEXITY_Q4'].replace(['N', 'Y'], ['0.0', '0.1']))
+supplier['PRODUCT_COMPLEXITY_Q5'] = pd.to_numeric(supplier['PRODUCT_COMPLEXITY_Q5'].replace(['N', 'Y'], ['0.0', '0.1']))
+
+supplier['PRODUCT_COMPLEXITY'] = supplier['PRODUCT_COMPLEXITY_Q1'] + supplier['PRODUCT_COMPLEXITY_Q2'] + supplier['PRODUCT_COMPLEXITY_Q3'] + supplier['PRODUCT_COMPLEXITY_Q4'] + supplier['PRODUCT_COMPLEXITY_Q5']
+```
+
+Lines 38-44:  
+Convert product complexity section from N or Y, to its 0.0 (risk factor absent) or 0.1 (risk factor present). Then, add all responsed values from Q1 to Q5, to a consolidated product complexity column within the dataframe.
+```python   
+supplier['PRICE_STABILITY_Q1'] = pd.to_numeric(supplier['PRICE_STABILITY_Q1'].replace(['N', 'Y'], ['0.0', '0.1']))
+supplier['PRICE_STABILITY_Q2'] = pd.to_numeric(supplier['PRICE_STABILITY_Q2'].replace(['N', 'Y'], ['0.0', '0.1']))
+supplier['PRICE_STABILITY_Q3'] = pd.to_numeric(supplier['PRICE_STABILITY_Q3'].replace(['N', 'Y'], ['0.0', '0.1']))
+supplier['PRICE_STABILITY_Q4'] = pd.to_numeric(supplier['PRICE_STABILITY_Q4'].replace(['N', 'Y'], ['0.0', '0.1']))
+supplier['PRICE_STABILITY_Q5'] = pd.to_numeric(supplier['PRICE_STABILITY_Q5'].replace(['N', 'Y'], ['0.0', '0.1']))
+
+supplier['PRICE_STABILITY'] = supplier['PRICE_STABILITY_Q1'] + supplier['PRICE_STABILITY_Q2'] + supplier['PRICE_STABILITY_Q3'] + supplier['PRICE_STABILITY_Q4'] + supplier['PRICE_STABILITY_Q5']
+```
+
+Lines 46:  
+Create the Risk Index variable within the CSV dataframe.
+```python   
+supplier['risk_index'] = supplier['AVAILABILITY'] + supplier['SUPPLIERS'] + supplier['PRODUCT_COMPLEXITY'] + supplier['PRICE_STABILITY']
+```
+
+Lines 48-49:  
+Create the Value variable within the CSV dataframe. Low value refers to value below the median level, and high value refers to value above the median level.
+```python   
+supplier['value'] = supplier['PRICEEACH'] * supplier['QUANTITYORDERED']
+supplier.value.describe()
+```
+
+Lines 51-52:  
+Create a new CSV dataframe (cleaned data).
+```python   
+supplier_clean = supplier.copy()
+supplier_clean.info()
+```
+
+### Part 2 - Perform Supplier Segmentation using Karljic's Matrix
+
+Lines 57-72:  
+Create a function that defines each supplier in one of the four Kraljic's Matrix quadrants.
+```python   
+def category (x,y):
+    if ((x >= supplier_clean.value.median()) & (y >= 1)):
+        return 'strategic'
+    if ((x >= supplier_clean.value.median()) & (y < 1)):
+        return 'leverage'
+    if ((x < supplier_clean.value.median()) & (y < 1)):
+        return 'non-critical'
+    if ((x < supplier_clean.value.median()) & (y >= 1)):
+        return 'bottleneck'
+
+for i in range (supplier_clean.shape[0]):
+    supplier_clean.loc[i,'category'] = category(supplier_clean.loc[i,'value'],
+                                                supplier_clean.loc[i,'risk_index'])
+
+supplier_clean['risk_index'].value_counts()
+supplier_clean.category.value_counts()
+```
+
+Lines 74:  
+Create a scatter plot for all the suppliers, with different colors for each Kraljic's Matrix quadrants.
+```python   
+kraljic_diagram = sns.scatterplot(x = 'risk_index', y = 'value', data = supplier_clean, hue= 'category')
+```
+
 ## Credit
 
 Sales Data Sample (https://www.kaggle.com/datasets/kyanyoga/sample-sales-data)
