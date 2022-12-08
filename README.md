@@ -68,7 +68,7 @@ pip install inventorize
 
 ## Sample Dataset
 
-You can download the sales_data_sample_utf8.csv file from the source folder, which is located [here](https://github.com/dwoo-work/Linear_Regression_Analysis_using_Python/tree/main/src).
+You can download the sales_data_sample_utf8.csv file from the source folder, which is located [here](https://github.com/dwoo-work/MultiCriteriaABC.Analysis/blob/main/src).
 
 Ensure that the file is in CSV UTF-8 format, to avoid UnicodeDecodeError later on.
 
