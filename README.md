@@ -16,11 +16,17 @@ ABC Analysis is important to the different aspects of supply chain:
 - Supplier rationalisation
 - Customer strategies
 
+In total, there will be three sets of scripts which make use of ABC Analysis to perform segmentation:
+
+- Product Segmentation
+- Supplier Segmentation (WIP)
+- Customer Segmentation (WIP)
+
+## Product Segmentation
+
 Normally, with ABC Analysis, we will classify these SKUs into either one of the three categories:
 
-- A: Products / Suppliers / Customers that represent 80% of the business.
-- B: Products / Suppliers / Customers that represent 15% of the business.
-- C: Products / Suppliers / Customers that represent 5% of the business.
+![ABC Analysis Diagram](https://github.com/dwoo-work/MultiCriteriaABC.Analysis/blob/0a89153bb25bf3f79aac81b93a0df28b6b9eb45a/img/ABC_Analysis_Diagram.png)
 
 Once the SKUs are classified, the strategies for inventory management will be different across them:
 
@@ -44,11 +50,27 @@ This will be all it takes, if you are performing a normal ABC Analysis using one
 
 By classifying SKUs using Multi-Criteria ABC Analysis, you can create a more customised and specific set of strategies.
 
-In total, there will be three sets of scripts which make use of ABC Analysis to perform segmentation:
+## Supplier Segmentation
 
-- Product Segmentation
-- Customer Segmentation (WIP)
-- Supplier Segmentation (WIP)
+When it comes to Supplier Segmentation, one popular model that is commonly being used, is the Kraljic's Matrix Diagram:
+
+![Kraljic's Matrix Diagram](https://github.com/dwoo-work/MultiCriteriaABC.Analysis/blob/0a89153bb25bf3f79aac81b93a0df28b6b9eb45a/img/Kraljic's_Matrix_Diagram.png)
+
+For each supplier, they are evaluated on two metrics - their products comlexity (risk), and their impact to our business (profit/cost).
+
+To measure risk, we will employ a Risk Rank from 0 (least risky) to 2 (most risky):
+
+| + 0.0                | + 0.5                   |
+| ---------------------| ----------------------- |
+| Standard product     | Complex product         |
+| Many suppliers       | Few / Sole supplier     |
+| Regularly available  | Not regularly available |
+| Steady cost          | Volatile cost           |
+
+To measure either profit or cost, we can employ the following calculations:
+
+- Profit = (Profit per unit) * (Total units planned to purchase)
+- Cost = (Cost per unit) * (Total units planned to purchase)
 
 ## Installation
 
