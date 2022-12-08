@@ -60,7 +60,7 @@ For each supplier, they are evaluated on two metrics - their products comlexity 
 
 To measure risk, we will employ a Risk Rank from 0 (least risky) to 2 (most risky):
 
-| sub-component      | + 0.0 (Y)            | + 0.5                   |
+| sub-component      | + 0.0 (Y)            | + 0.5 (N)               |
 | ------------------ | ---------------------| ----------------------- |
 | availability       | regular              | seldom                  |
 | suppliers          | many                 | few                     |
