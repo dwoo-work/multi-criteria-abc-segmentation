@@ -1,4 +1,4 @@
-# Multi-Criteria ABC Analysis
+# ABC Analysis
 
 This will demonstrate to you how to perform Multi-Criteria ABC Analysis using Python.
 
@@ -18,8 +18,8 @@ ABC Analysis is important to the different aspects of supply chain:
 
 Normally, with ABC Analysis, we will classify these SKUs into either one of the three categories:
 
-- A: Products / Suppliers / Customers that represent 75% of the business.
-- B: Products / Suppliers / Customers that represent 20% of the business.
+- A: Products / Suppliers / Customers that represent 80% of the business.
+- B: Products / Suppliers / Customers that represent 15% of the business.
 - C: Products / Suppliers / Customers that represent 5% of the business.
 
 Once the SKUs are classified, the strategies for inventory management will be different across them:
@@ -43,6 +43,12 @@ This will be all it takes, if you are performing a normal ABC Analysis using one
 | C        | C       | Slow Moving                |
 
 By classifying SKUs using Multi-Criteria ABC Analysis, you can create a more customised and specific set of strategies.
+
+In total, there will be three sets of scripts which make use of ABC Analysis to perform segmentation:
+
+- Product Segmentation
+- Customer Segmentation (WIP)
+- Supplier Segmentation (WIP)
 
 ## Installation
 
