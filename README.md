@@ -19,8 +19,7 @@ ABC Analysis is important to the different aspects of supply chain:
 In total, there will be three sets of scripts which make use of ABC Analysis to perform segmentation:
 
 - Product Segmentation
-- Supplier Segmentation (WIP)
-- Customer Segmentation (WIP)
+- Supplier Segmentation
 
 ## Product Segmentation
 
