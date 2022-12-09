@@ -1,6 +1,6 @@
 # Multi-Criteria ABC Segmentation
 
-This will demonstrate to you how to perform Multi-Criteria ABC Analysis using Python.
+This will demonstrate to you how to perform Multi-Criteria ABC Segmentation using Python.
 
 In your sales data, you will have data for customers, products, and suppliers. However, as there are too many Stock-Keeping-Units (or SKUs), you cannot observe them individually.
 
