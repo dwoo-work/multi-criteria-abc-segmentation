@@ -1,4 +1,4 @@
-# Multi-Criteria ABC Analysis
+# Multi-Criteria ABC Segmentation
 
 This will demonstrate to you how to perform Multi-Criteria ABC Analysis using Python.
 
