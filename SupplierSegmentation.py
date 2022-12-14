@@ -5,7 +5,7 @@
 import pandas as pd
 import seaborn as sns
 
-supplier = pd.read_csv('supplier_data_sample_utf8.csv')
+supplier = pd.read_csv('https://raw.githubusercontent.com/dwoo-work/multi-criteria-abc-segmentation/main/src/supplier_data_sample_utf8.csv')
 supplier = supplier.drop_duplicates()
 supplier = supplier.dropna()
 supplier.info()
