@@ -71,4 +71,4 @@ for i in range (supplier_clean.shape[0]):
 supplier_clean['risk_index'].value_counts()
 supplier_clean.category.value_counts()
 
-kraljic_diagram = sns.scatterplot(x = 'risk_index', y = 'value', data = supplier_clean, hue= 'category')
+kraljic_diagram = sns.scatterplot(x = 'risk_index', y = 'value', data = supplier_clean, hue= 'category').set(title = 'Suppliers Classification using the Kraljic Matrix')
