@@ -27,8 +27,8 @@ abc = inv.ABC(grouped[['PRODUCTCODE', 'total_sales']])
 abc.info()
 abc.Category.value_counts()
 
-sns.countplot(x = 'Category', data = abc)
-sns.barplot(x = 'Category', y = 'total_sales', data = abc)
+sns.countplot(x = 'Category', data = abc).set(title = 'No. of A, B, and C Cat. Items for All Countries')
+sns.barplot(x = 'Category', y = 'total_sales', data = abc).set(title = 'Avg. Value of A, B, and C Cat. Items for All Countries')
 
 #------------------------------------------------------------------------------------------
 # PART 3 - Multi-Criteria ABC Analysis
@@ -37,12 +37,12 @@ mc_abc = inv.productmix(grouped['PRODUCTCODE'], grouped['total_sales'], grouped[
 mc_abc.info()
 mc_abc.product_mix.value_counts()
 
-sns.countplot(x = 'product_mix', data = mc_abc)
-sns.barplot(x = 'product_mix', y = 'sales', data = mc_abc)
-sns.barplot(x = 'product_mix', y = 'revenue', data = mc_abc)
+sns.countplot(x = 'product_mix', data = mc_abc).set(title = 'No. of A_A to C_C Cat. Items for All Countries')
+sns.barplot(x = 'product_mix', y = 'sales', data = mc_abc).set(title = 'Avg. Value of A_A to C_C Cat. Items for All Countries')
+sns.barplot(x = 'product_mix', y = 'revenue', data = mc_abc).set(title = 'Total Revenue of A_A to C_C Cat. Items for All Countries')
 
 #------------------------------------------------------------------------------------------
-# PART 4 - Multi-Criteria ABC Analysis on a Store Level
+# PART 4 - Multi-Criteria ABC Analysis on a Store Level (Australia)
 
 mix_country = inv.productmix_storelevel(by_store['PRODUCTCODE'], by_store['total_sales'], by_store['total_revenue'], by_store['COUNTRY'])
 mix_country.info()
@@ -53,4 +53,4 @@ product_mix.info()
 australia = product_mix[product_mix.storeofsku == 'Australia']
 australia.info()
 
-sns.barplot(x = 'product_mix', y = 'sku', data = australia)
+sns.barplot(x = 'product_mix', y = 'sku', data = australia).set(title = 'No. of A_A to C_C Cat. Items for Australia')
