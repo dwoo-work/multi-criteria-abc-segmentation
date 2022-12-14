@@ -149,8 +149,8 @@ abc.Category.value_counts()
 Lines 30-31:  
 Plot the charts for ABC Analysis using Seaborn.
 ```python   
-sns.countplot(x = 'Category', data = abc)
-sns.barplot(x = 'Category', y = 'total_sales', data = abc)
+sns.countplot(x = 'Category', data = abc).set(title = 'No. of A, B, and C Cat. Items for All Countries')
+sns.barplot(x = 'Category', y = 'total_sales', data = abc).set(title = 'Avg. Value of A, B, and C Cat. Items for All Countries')
 ```
 
 ### Part 3 - Multi-Criteria ABC Analysis
@@ -166,12 +166,12 @@ mc_abc.product_mix.value_counts()
 Lines 40-42:  
 Plot the charts for Multi-Criteria ABC Analysis using Seaborn.
 ```python   
-sns.countplot(x = 'product_mix', data = mc_abc)
-sns.barplot(x = 'product_mix', y = 'sales', data = mc_abc)
-sns.barplot(x = 'product_mix', y = 'revenue', data = mc_abc)
+sns.countplot(x = 'product_mix', data = mc_abc).set(title = 'No. of A_A to C_C Cat. Items for All Countries')
+sns.barplot(x = 'product_mix', y = 'sales', data = mc_abc).set(title = 'Avg. Value of A_A to C_C Cat. Items for All Countries')
+sns.barplot(x = 'product_mix', y = 'revenue', data = mc_abc).set(title = 'Total Revenue of A_A to C_C Cat. Items for All Countries')
 ```
 
-### Part 4 - Multi-Criteria ABC Analysis on a Store Level
+### Part 4 - Multi-Criteria ABC Analysis on a Store Level (Australia)
 
 Lines 47-51:  
 Perform Multi-Criteria ABC Analysis on Store-level on CSV dataframe (pre-ABC data)
@@ -193,7 +193,7 @@ australia.info()
 Lines 56:  
 Plot the charts for Australia's Multi-Criteria ABC Analysis using Seaborn.
 ```python   
-sns.barplot(x = 'product_mix', y = 'sku', data = australia)
+sns.barplot(x = 'product_mix', y = 'sku', data = australia).set(title = 'No. of A_A to C_C Cat. Items for Australia')
 ```
 
 ## Code Explanation (for Supplier Segmentation)
