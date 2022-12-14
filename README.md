@@ -219,7 +219,7 @@ import seaborn as sns
 Lines 8-12:  
 Import and clean the CSV dataframe.
 ```python   
-supplier = pd.read_csv('supplier_data_sample_utf8.csv')
+supplier = pd.read_csv('https://raw.githubusercontent.com/dwoo-work/multi-criteria-abc-segmentation/main/src/supplier_data_sample_utf8.csv')
 supplier = supplier.drop_duplicates()
 supplier = supplier.dropna()
 supplier.info()
