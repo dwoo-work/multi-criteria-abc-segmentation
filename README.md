@@ -153,6 +153,9 @@ sns.countplot(x = 'Category', data = abc).set(title = 'No. of A, B, and C Cat. I
 sns.barplot(x = 'Category', y = 'total_sales', data = abc).set(title = 'Avg. Value of A, B, and C Cat. Items for All Countries')
 ```
 
+![Plot1](https://github.com/dwoo-work/multi-criteria-abc-segmentation/blob/main/plots/plot1.png)
+![Plot2](https://github.com/dwoo-work/multi-criteria-abc-segmentation/blob/main/plots/plot2.png)
+
 ### Part 3 - Multi-Criteria ABC Analysis
 
 Lines 36-38:  
@@ -170,6 +173,10 @@ sns.countplot(x = 'product_mix', data = mc_abc).set(title = 'No. of A_A to C_C C
 sns.barplot(x = 'product_mix', y = 'sales', data = mc_abc).set(title = 'Avg. Value of A_A to C_C Cat. Items for All Countries')
 sns.barplot(x = 'product_mix', y = 'revenue', data = mc_abc).set(title = 'Total Revenue of A_A to C_C Cat. Items for All Countries')
 ```
+
+![Plot3](https://github.com/dwoo-work/multi-criteria-abc-segmentation/blob/main/plots/plot3.png)
+![Plot4](https://github.com/dwoo-work/multi-criteria-abc-segmentation/blob/main/plots/plot4.png)
+![Plot5](https://github.com/dwoo-work/multi-criteria-abc-segmentation/blob/main/plots/plot5.png)
 
 ### Part 4 - Multi-Criteria ABC Analysis on a Store Level (Australia)
 
@@ -195,6 +202,8 @@ Plot the charts for Australia's Multi-Criteria ABC Analysis using Seaborn.
 ```python   
 sns.barplot(x = 'product_mix', y = 'sku', data = australia).set(title = 'No. of A_A to C_C Cat. Items for Australia')
 ```
+
+![Plot6](https://github.com/dwoo-work/multi-criteria-abc-segmentation/blob/main/plots/plot6.png)
 
 ## Code Explanation (for Supplier Segmentation)
 
