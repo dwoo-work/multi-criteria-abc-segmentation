@@ -320,8 +320,10 @@ supplier_clean.category.value_counts()
 Lines 74:  
 Create a scatter plot for all the suppliers, with different colors for each Kraljic's Matrix quadrants.
 ```python   
-kraljic_diagram = sns.scatterplot(x = 'risk_index', y = 'value', data = supplier_clean, hue= 'category')
+kraljic_diagram = sns.scatterplot(x = 'risk_index', y = 'value', data = supplier_clean, hue= 'category').set(title = 'Suppliers Classification using the Kraljic Matrix')
 ```
+
+![Plot7](https://github.com/dwoo-work/multi-criteria-abc-segmentation/blob/main/plots/plot7.png)
 
 ## Credit
 
