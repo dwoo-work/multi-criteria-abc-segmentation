@@ -105,7 +105,7 @@ lapply(required_libraries, require, character.only = TRUE)
 Lines 9-11:  
 Import and clean the CSV dataframe. Use the cleaned data to create a new CSV dataframe.
 ```r   
-sales <- read.csv('C:\\Users\\danie\\OneDrive\\Desktop\\archive\\sales_data_sample_utf8.csv')
+sales <- read.csv('https://raw.githubusercontent.com/dwoo-work/multi-criteria-abc-segmentation/main/src/sales_data_sample_utf8.csv')
 sales <- unique(sales)
 sales_clean <- sales
 ```
@@ -213,6 +213,10 @@ mc_abc_barplot2 <- ggplot(mc_abc, aes(x = product_mix, y = revenue)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
+![Plot3](https://github.com/dwoo-work/multi-criteria-abc-segmentation/blob/main/plots/plot3.png)
+![Plot4](https://github.com/dwoo-work/multi-criteria-abc-segmentation/blob/main/plots/plot4.png)
+![Plot5](https://github.com/dwoo-work/multi-criteria-abc-segmentation/blob/main/plots/plot5.png)
+
 ### PART 4 - MULTI-CRITERIA ABC ANALYSIS ON A STORE-LEVEL
 
 Lines 81-86:  
@@ -242,6 +246,8 @@ aus_countplot <- ggplot(australia, aes(x = product_mix, y = SKU_count)) +
   xlab("ABC Product Mix") + ylab("Number of SKUs") +
   theme(plot.title = element_text(hjust = 0.5))
 ```
+
+![Plot6](https://github.com/dwoo-work/multi-criteria-abc-segmentation/blob/main/plots/plot6.png)
 
 ## Code Explanation (for Supplier Segmentation)
 
