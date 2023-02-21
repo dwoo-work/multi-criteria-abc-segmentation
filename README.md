@@ -80,10 +80,7 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install:
 - inventorize: to calculate for inventory metrics, stock-out, and ABC analysis.
 
 ```bash
-pip install pandas
-pip install numpy
-pip install seaborn
-pip install inventorize
+install.packages(c("readr", "dplyr", "DT", "ggplot2"))
 ```
 
 ## Sample Dataset
@@ -96,114 +93,155 @@ Ensure that the file is in CSV UTF-8 format, to avoid UnicodeDecodeError later o
 
 ## Code Explanation (for Product Segmentation)
 
-### Part 1 - Preparation
+### PART 1 - PREPARATION
 
-Lines 5-8:  
-Import the required libraries.
-```python   
-import pandas as pd
-import numpy as np
-import seaborn as sns
-import inventorize as inv
+Lines 6-7:  
+Ensure that all the necessary libraries are loaded and available for use in this project.
+```r   
+required_libraries <- c("tidyverse", "inventorize", "dplyr", "ggplot2")
+lapply(required_libraries, require, character.only = TRUE)
 ```
 
-Lines 10-12:  
-Import and clean the CSV dataframe.
-```python   
-sales = pd.read_csv('sales_data_sample_utf8.csv')
-sales = sales.drop_duplicates()
-sales.info()
+Lines 9-11:  
+Import and clean the CSV dataframe. Use the cleaned data to create a new CSV dataframe.
+```r   
+sales <- read.csv('C:\\Users\\danie\\OneDrive\\Desktop\\archive\\sales_data_sample_utf8.csv')
+sales <- unique(sales)
+sales_clean <- sales
 ```
 
-Lines 14-15:  
-Create a new CSV dataframe (cleaned data).
-```python   
-sales_clean = sales.copy()
-sales_clean.info()
+Lines 13-17:  
+Create a new CSV dataframe that will be used for both ABC Analysis and Multi-Criteria ABC Analysis.
+```r   
+grouped <- sales_clean %>%
+  group_by(PRODUCTCODE) %>%
+  summarize(total_sales = sum(QUANTITYORDERED),
+            total_revenue = sum(SALES)) %>%
+  ungroup()
 ```
 
-Lines 17-18:  
-Create a new CSV dataframe (pre-ABC data). This is used for both ABC Analysis and Multi-Criteria Analysis.
-```python   
-grouped = sales_clean.groupby('PRODUCTCODE').agg(total_sales = ('QUANTITYORDERED',np.sum), total_revenue = ('SALES', np.sum)).reset_index()
-grouped.info()
+Lines 19-23:  
+Create a new CSV dataframe that will be used for Multi-Criteria ABC Analysis on a Store-Level (classification in this case is 'Country').
+```r   
+by_store <- sales_clean %>%
+  group_by(COUNTRY, PRODUCTCODE) %>%
+  summarize(total_sales = sum(QUANTITYORDERED),
+            total_revenue = sum(SALES)) %>%
+  ungroup()
 ```
 
-Lines 20-21:  
-This is used for Multi-Criteria Analysis on a Store-level. For this, classification of Store is Country.
-```python   
-by_store = sales_clean.groupby(['COUNTRY','PRODUCTCODE']).agg(total_sales = ('QUANTITYORDERED',np.sum), total_revenue = ('SALES',np.sum)).reset_index()
-by_store.info()
+### PART 2 - ABC ANALYSIS
+
+Lines 29-31:  
+Create a new dataframe (abc) to perform ABC Analysis. Calculate the cumulative percentage of total sales.
+```r   
+abc <- grouped %>%
+  arrange(desc(total_sales)) %>%
+  mutate(cum_pct_sales = cumsum(total_sales) / sum(total_sales))
 ```
 
-### Part 2 - ABC Analysis
-
-Lines 26-28:  
-Perform ABC Analysis on CSV dataframe (pre-ABC data)
-```python   
-abc = inv.ABC(grouped[['PRODUCTCODE', 'total_sales']])
-abc.info()
-abc.Category.value_counts()
+Lines 33-35:  
+Assign ABC categories based on cumulative percentage of total sales.
+```r   
+abc <- abc %>%
+  mutate(Category = ifelse(cum_pct_sales <= 0.8, "A",
+                           ifelse(cum_pct_sales <= 0.95, "B", "C")))
 ```
 
-Lines 30-31:  
-Plot the charts for ABC Analysis using Seaborn.
-```python   
-sns.countplot(x = 'Category', data = abc).set(title = 'No. of A, B, and C Cat. Items for All Countries')
-sns.barplot(x = 'Category', y = 'total_sales', data = abc).set(title = 'Avg. Value of A, B, and C Cat. Items for All Countries')
+Lines 37-41:  
+Plot the Countplot using ggplot2, which shows the number of A, B, and C category SKUs.
+```r   
+abc_countplot <- ggplot(abc, aes(x = Category)) +
+  geom_bar() +
+  ggtitle("Number of A, B, and C Category SKUs") +
+  xlab("ABC Product Category Type") + ylab("Number of SKUs") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+Lines 43-48:  
+Plot the Barplot using ggplot2, which shows the average quantity ordered for each product code belonging to the A, B, C category types.
+```r   
+abc_barplot <- ggplot(abc, aes(x = Category, y = total_sales)) +
+  geom_bar(stat = "summary", fun = "mean") +
+  ggtitle("Average Quantity Ordered of A, B, and C Category Product Code") +
+  xlab("ABC Product Category Type") +
+  ylab("Average Quantity Ordered for each Product Code") +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
 ![Plot1](https://github.com/dwoo-work/multi-criteria-abc-segmentation/blob/main/plots/plot1.png)
 ![Plot2](https://github.com/dwoo-work/multi-criteria-abc-segmentation/blob/main/plots/plot2.png)
 
-### Part 3 - Multi-Criteria ABC Analysis
+### PART 3 - MULTI-CRITERIA ABC ANALYSIS
 
-Lines 36-38:  
-Perform Multi-Criteria ABC Analysis on CSV dataframe (pre-ABC data)
-```python   
-mc_abc = inv.productmix(grouped['PRODUCTCODE'], grouped['total_sales'], grouped['total_revenue'])
-mc_abc.info()
-mc_abc.product_mix.value_counts()
+Lines 54-56:  
+Create a new dataframe (mc_abc) to perform Multi-Criteria ABC Analysis.
+```r   
+mc_abc <- productmix(grouped$PRODUCTCODE, grouped$total_sales, grouped$total_revenue)
+str(mc_abc)
+table(mc_abc$product_mix)
 ```
 
-Lines 40-42:  
-Plot the charts for Multi-Criteria ABC Analysis using Seaborn.
-```python   
-sns.countplot(x = 'product_mix', data = mc_abc).set(title = 'No. of A_A to C_C Cat. Items for All Countries')
-sns.barplot(x = 'product_mix', y = 'sales', data = mc_abc).set(title = 'Avg. Value of A_A to C_C Cat. Items for All Countries')
-sns.barplot(x = 'product_mix', y = 'revenue', data = mc_abc).set(title = 'Total Revenue of A_A to C_C Cat. Items for All Countries')
+Lines 58-62:  
+Plot the Countplot using ggplot2, which shows the number of SKUs belong to each of the 9 Product Mix.
+```r   
+mc_abc_countplot <- ggplot(mc_abc, aes(x = product_mix)) +
+  geom_bar() +
+  ggtitle("Number of A_A to C_C Category SKUs") +
+  xlab("ABC Product Mix") + ylab("Number of SKUs") +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
-![Plot3](https://github.com/dwoo-work/multi-criteria-abc-segmentation/blob/main/plots/plot3.png)
-![Plot4](https://github.com/dwoo-work/multi-criteria-abc-segmentation/blob/main/plots/plot4.png)
-![Plot5](https://github.com/dwoo-work/multi-criteria-abc-segmentation/blob/main/plots/plot5.png)
-
-### Part 4 - Multi-Criteria ABC Analysis on a Store Level (Australia)
-
-Lines 47-51:  
-Perform Multi-Criteria ABC Analysis on Store-level on CSV dataframe (pre-ABC data)
-```python   
-mix_country = inv.productmix_storelevel(by_store['PRODUCTCODE'], by_store['total_sales'], by_store['total_revenue'], by_store['COUNTRY'])
-mix_country.info()
-
-product_mix = mix_country.groupby(['storeofsku','product_mix']).count().reset_index().iloc[:,0:3]
-product_mix.info()
+Lines 58-62:  
+Plot the Barplot using ggplot2, which shows the average quantity ordered for each product code belong to each of the 9 Product Mix.
+```r   
+mc_abc_barplot1 <- ggplot(mc_abc, aes(x = product_mix, y = sales)) +
+  geom_bar(stat = "summary", fun = "mean") +
+  ggtitle("Average Quantity Ordered of A_A to C_C Category Product Code") +
+  xlab("ABC Product Mix") +
+  ylab("Average Quantity Ordered for each Product Code") +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
-Lines 53-54:  
+Lines 71-75:  
+Plot the Barplot using ggplot2, which shows the average revenue for each product code belong to each of the 9 Product Mix.
+```r   
+mc_abc_barplot2 <- ggplot(mc_abc, aes(x = product_mix, y = revenue)) +
+  geom_bar(stat = "summary", fun = "mean") +
+  ggtitle("Total Revenue of A_A to C_C Category Product Code") +
+  xlab("ABC Product Mix") + ylab("Average Revenue for each Product Code") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+### PART 4 - MULTI-CRITERIA ABC ANALYSIS ON A STORE-LEVEL
+
+Lines 81-86:  
+Create a new dataframe (mix_country) to perform Multi-Criteria ABC Analysis on a store-level.
+```r   
+mix_country <- inventorize::productmix_storelevel(by_store$PRODUCTCODE, by_store$total_sales, by_store$total_revenue, by_store$COUNTRY)
+product_mix <- mix_country %>%
+  dplyr::group_by(storeofsku, product_mix) %>%
+  dplyr::summarise(SKU_count = n()) %>%
+  dplyr::ungroup() %>%
+  dplyr::select(storeofsku, product_mix, SKU_count)
+```
+
+Lines 88-89:  
 Create a variable for Australia's product mix for analysis.
-```python   
-australia = product_mix[product_mix.storeofsku == 'Australia']
-australia.info()
+```r   
+australia <- subset(product_mix, storeofsku == "Australia")
+str(australia)
 ```
 
-Lines 56:  
-Plot the charts for Australia's Multi-Criteria ABC Analysis using Seaborn.
-```python   
-sns.barplot(x = 'product_mix', y = 'sku', data = australia).set(title = 'No. of A_A to C_C Cat. Items for Australia')
+Lines 91-95:  
+Plot the Countplot using ggplot2, which shows the number of SKUs belong to each of the 9 Product Mix (for Australia).
+```r   
+aus_countplot <- ggplot(australia, aes(x = product_mix, y = SKU_count)) +
+  geom_bar(stat = "identity") +
+  ggtitle("Number of A_A to C_C Category SKUs for Australia") +
+  xlab("ABC Product Mix") + ylab("Number of SKUs") +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
-
-![Plot6](https://github.com/dwoo-work/multi-criteria-abc-segmentation/blob/main/plots/plot6.png)
 
 ## Code Explanation (for Supplier Segmentation)
 
